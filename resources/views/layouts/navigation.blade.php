@@ -162,7 +162,7 @@
                                 </x-nav-link>
                             </li>
                             <li class=" border-gray-600 ">
-                                <x-nav-link :href="route('admin.schedules')" :active="request()->routeIs('admin.schedules')"
+                                <x-nav-link :href="route('admin.schedules.index')" :active="request()->routeIs('admin.schedules')"
                                     class="flex items-center p-2 text-base font-normal text-gray-900">
                                     <i class='bx bxs-calendar'></i>
                                     <span class="ml-3">{{ __('Jadwal Sidang') }}</span>
@@ -261,10 +261,17 @@
                                 </x-nav-link>
                             </li>
                             <li class=" border-gray-600 ">
-                                <x-nav-link :href="route('dosen.schedules.index')" :active="request()->routeIs('dosen.schedules.index')"
+                                <x-nav-link :href="route('dosen.schedules')" :active="request()->routeIs('dosen.schedules.index')"
                                     class="flex items-center p-2 text-base font-normal text-gray-900">
                                     <i class='bx bxs-book'></i>
                                     <span class="ml-3">{{ __('Jadwal Sidang') }}</span>
+                                </x-nav-link>
+                            </li>
+                            <li>
+                                <x-nav-link :href="route('dosen.proposal')" :active="request()->routeIs('dosen.proposal')"
+                                    class="flex items-center p-2 text-base font-normal text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <i class='bx bxs-book'></i>
+                                    <span class="ml-3">{{ __('Proposal') }}</span>
                                 </x-nav-link>
                             </li>
                             <li>

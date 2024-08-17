@@ -109,6 +109,9 @@
                                     <th
                                         class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">
                                         Status</th>
+                                    <th
+                                        class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">
+                                        keterangan</th>
                                     <th class="px-6 py-3 border-b-2 border-gray-300">Aksi</th>
                                 </tr>
                             </thead>
@@ -118,6 +121,8 @@
                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->judul }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->status }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->keterangan }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-sm leading-5 text-center text-gray-500">
                                             <a href="{{ route('skripsi.edit', $item->id) }}"

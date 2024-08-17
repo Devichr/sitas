@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Skripsi;
+use App\Models\proposal;
 use App\Models\Prodi;
 
 class DosenController extends Controller
@@ -29,5 +30,11 @@ class DosenController extends Controller
     $mahasiswa = User::where('dosen_pembimbing', auth()->user()->id)->get();
     $skripsi = Skripsi::whereIn('mahasiswa_id', $mahasiswa->pluck('id'))->get();
     return view('dosen.monitor', compact('skripsi'));
+}
+    public function proposal()
+{
+    $mahasiswa = User::where('dosen_pembimbing', auth()->user()->id)->get();
+    $proposal = proposal::whereIn('mahasiswa_id', $mahasiswa->pluck('id'))->get();
+    return view('dosen.proposal', compact('proposal'));
 }
 }

@@ -21,6 +21,12 @@
                             <x-input-label for="file" :value="__('File')" />
                             <input type="file" name="file" accept="application/pdf" required>
                         </div>
+
+                        <div class="mb-4">
+                            <x-input-label for="judul" :value="__('Keterangan')" />
+                            <x-text-input id="keterangan" name="keterangan" type="text" class="mt-1 block w-full"
+                                required />
+                        </div>
                         <x-primary-button>{{ __('Ajukan Skripsi') }}</x-primary-button>
                     </form>
                 </div>

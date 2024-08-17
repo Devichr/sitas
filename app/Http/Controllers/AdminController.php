@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Skripsi;
 use App\Models\Prodi;
+use App\Models\Notification;
 use App\Models\proposal;
 
 class AdminController extends Controller
 {
+
     public function index()
     {
 
@@ -58,14 +60,33 @@ class AdminController extends Controller
                 'ditolak' => ($rejectCount / $skripsiCount) * 100,
             ];
         }
+        $user = auth()->user();
+        $notifications = Notification::orderBy('created_at', 'desc')->get();
+        $unreadNotifications = $notifications->where('is_read', false)->count();
 
-
-
-
-        return view('admin.index', compact('mahasiswaCount', 'dosenCount', 'skripsiCount', 'prodiCount', 'data', 'persentase', 'dataPengajuan', 'dataDitolak', 'dataAcc'));
+        return view('admin.index', compact(
+        'mahasiswaCount',
+        'dosenCount',
+        'skripsiCount',
+        'prodiCount',
+        'data',
+        'persentase',
+        'dataPengajuan',
+        'dataDitolak',
+        'dataAcc',
+        'notifications',
+        'unreadNotifications'));
     }
 
+    public function markAllAsRead()
+    {
 
+        Notification::where('is_read', false)->update(['is_read' => true]);
+
+        Notification::where('is_read', true)->delete();
+
+        return redirect()->back();
+    }
 
     public function create()
     {
@@ -204,7 +225,8 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Dosen pembimbing berhasil diperbarui.');
     }
 
-    public function skripsi(){
+    public function skripsi()
+    {
         $skripsi = Skripsi::where('status', 'pengajuan')->get();
         return view('admin.skripsi.index', compact('skripsi'));
     }

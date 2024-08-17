@@ -5,7 +5,6 @@ use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
-use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SkripsiController;
@@ -32,22 +31,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/dosen/dashboard', [DosenController::class, 'index'])->name('dashboard');
         Route::get('/dosen/bimbingan', [DosenController::class, 'bimbingan'])->name('bimbingan');
         Route::get('/dosen/monitor', [DosenController::class, 'monitor'])->name('monitor');
+        Route::get('/dosen/proprosal', [DosenController::class, 'proposal'])->name('proposal');
         Route::get('/dosen/dokumen', [FormController::class, 'fetchDocumentsDosen'])->name('mahasiswa.documents');
         Route::get('/dosen/{student}/documents', [FormController::class, 'showDocuments'])->name('mahasiswa.view');
-        Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedules.index');
-        Route::post('/schedules', [ScheduleController::class, 'store'])->name('schedules.store');
+        Route::get('/dosen/schedules', [ScheduleController::class, 'all'])->name('schedules');
     });
 
     Route::middleware([RoleMiddleware::class . ':admin'])->name('admin.')->group(function () {
-        Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('index');
-        Route::get('/admin/users', [AdminController::class, 'users'])->name('users');
-        Route::get('/admin/skripsi/pengajuan', [AdminController::class, 'skripsi'])->name('pengajuanSkripsi');
-        Route::get('/admin/skripsi', [AdminController::class, 'semuaSkripsi'])->name('semuaSkripsi');
-        Route::get('/admin/prodi', [AdminController::class, 'prodi'])->name('prodi');
-        Route::get('/admin/skripsi/monitoring', [AdminController::class, 'monitoringSkripsi'])->name('monitoringSkripsi');
-        Route::get('/admin/proposal', [AdminController::class, 'proposal'])->name('proposal');
-        Route::post('/admin/proposal/{id}/approve', [AdminController::class, 'approveProposal'])->name('proposal.approve');
-        Route::post('/admin/proposal/{id}/reject', [AdminController::class, 'rejectProposal'])->name('proposal.reject');
+        Route::get('/kaprodi/dashboard', [AdminController::class, 'index'])->name('index');
+        Route::get('/kaprodi/users', [AdminController::class, 'users'])->name('users');
+        Route::get('/kaprodi/skripsi/pengajuan', [AdminController::class, 'skripsi'])->name('pengajuanSkripsi');
+        Route::get('/kaprodi/skripsi', [AdminController::class, 'semuaSkripsi'])->name('semuaSkripsi');
+        Route::get('/kaprodi/prodi', [AdminController::class, 'prodi'])->name('prodi');
+        Route::get('/kaprodi/skripsi/monitoring', [AdminController::class, 'monitoringSkripsi'])->name('monitoringSkripsi');
+        Route::get('/kaprodi/proposal', [AdminController::class, 'proposal'])->name('proposal');
+        Route::post('/kaprodi/proposal/{id}/approve', [AdminController::class, 'approveProposal'])->name('proposal.approve');
+        Route::post('/kaprodi/proposal/{id}/reject', [AdminController::class, 'rejectProposal'])->name('proposal.reject');
         Route::resource('users', AdminController::class);
         Route::resource('prodi', ProdiController::class);
         Route::get('mahasiswa', [AdminController::class, 'dosen'])->name('dosen');
@@ -56,11 +55,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/skripsi/{id}/approve', [AdminController::class, 'approve'])->name('skripsi.approve');
         Route::post('/skripsi/{id}/reject', [AdminController::class, 'reject'])->name('skripsi.reject');
         Route::get('/skripsi/{id}/download', [AdminController::class, 'download'])->name('skripsi.download');
-        Route::get('/admin/dokumen', [FormController::class, 'fetchDocuments'])->name('mahasiswa.documents');
-        Route::get('/admin/{student}/documents', [FormController::class, 'showDocuments'])->name('mahasiswa.view');
-        Route::get('/admin/schedules', [ScheduleController::class, 'all'])->name('schedules');
+        Route::get('/kaprodi/dokumen', [FormController::class, 'fetchDocuments'])->name('mahasiswa.documents');
+        Route::get('/kaprodi/{student}/documents', [FormController::class, 'showDocuments'])->name('mahasiswa.view');
+        Route::get('/kaprodi/schedules', [ScheduleController::class, 'index'])->name('schedules.index');
+        Route::post('/kaprodi/schedules', [ScheduleController::class, 'store'])->name('schedules.store');
 
     });
+    Route::get('/mark-as-read', [AdminController::class, 'markAllAsRead'])->name('kaprodi.markAllAsRead');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

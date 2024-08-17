@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Skripsi') }}
+            {{ __('Daftar Proposal') }}
         </h2>
     </x-slot>
 
@@ -13,22 +13,22 @@
                         <tr>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">Mahasiswa</th>
                             <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">Judul</th>
-                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">Keterangan</th>
-                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800 tracking-wider">Status</th>
+                            <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-gray-800">Status</th>
+                            <th class="px-6 py-3 border-b-2 border-gray-300">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
-                        @foreach ($skripsi as $item)
+                        @foreach ($proposal as $item)
                             <tr>
                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->mahasiswa->name }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->judul }}</td>
-                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->keterangan }}</td>
                                 <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{{ $item->status }}</td>
-
+                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-sm leading-5 text-gray-500 text-center">
+                                        <a href="{{ route('admin.skripsi.download', $item->id) }}" class="bg-blue-500 text-white p-2 rounded">Download</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
-
                 </table>
             </div>
         </div>

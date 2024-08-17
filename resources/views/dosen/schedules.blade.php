@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action="{{ route('dosen.schedules.store') }}" method="POST" class="mb-6">
+        <form action="{{ route('admin.schedules.store') }}" method="POST" class="mb-6">
             @csrf
             <div class="mb-4">
                 <label for="user_id" class="block text-sm font-medium text-gray-700">Select Student</label>

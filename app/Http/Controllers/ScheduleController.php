@@ -11,15 +11,16 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $students = User::where('role', 'mahasiswa')->where('dosen_pembimbing', auth()->user()->id)->get();
+        $students = User::where('role', 'mahasiswa')->get();
         $schedules = Schedule::whereIn('user_id',$students->pluck('id'))->get();
         return view('dosen.schedules', compact('students','schedules'));
     }
 
     public function all()
     {
-        $schedules = Schedule::all();
-        return view('admin.schedules', compact('schedules'));
+        $students = User::where('role', 'mahasiswa')->where('dosen_pembimbing', auth()->user()->id)->get();
+        $schedules = Schedule::whereIn('user_id',$students->pluck('id'))->get();
+        return view('admin.schedules', compact('students','schedules'));
     }
 
     public function store(Request $request)

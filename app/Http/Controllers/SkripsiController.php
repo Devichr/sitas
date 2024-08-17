@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Skripsi;
 use App\Models\Schedule;
 use App\Models\proposal;
+use App\Models\User;
+use App\Models\Notification;
 use App\Models\User as ModelsUser;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -13,11 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class SkripsiController extends Controller
 {
-    public function cekJudul(Request $request)
-{
-    $duplikasi = Skripsi::where('judul', $request->judul)->exists();
-    return view('mahasiswa.cek_judul', compact('duplikasi'));
-}
 
 public function index()
 {
@@ -40,22 +37,38 @@ public function show()
 
 public function create()
 {
-    return view('skripsi.create');
+    $proposal = proposal::where('mahasiswa_id', auth()->id())->first();
+
+    if (!$proposal || $proposal->status != 'Disetujui') {
+        return redirect()->route('dashboard')->with('error', 'Anda tidak dapat mengisi Skripsi sebelum proposal disetujui oleh Kaprodi.');
+    }else{
+        return view('skripsi.create');
+    }
 }
 public function store(Request $request)
     {
         $request->validate([
             'judul' => 'required|string|max:255',
             'file' => 'required|mimes:pdf|max:20480',
+            'keterangan' =>'required|string|max:255'
         ]);
 
         $filePath = $request->file('file')->store('public/skripsi');
 
-        Skripsi::create([
+        $skripsi = Skripsi::create([
             'mahasiswa_id' => auth()->id(),
             'judul' => $request->judul,
             'file' => $filePath,
+            'keterangan' => $request->keterangan,
         ]);
+
+        // Kirim notifikasi ke Kaprodi
+            Notification::create([
+                'user_id' => Auth::user()->id,
+                'type' => 'skripsi',
+                'reference_id' => $skripsi->id,
+                'message' => 'Pengajuan skripsi baru oleh ' . auth()->user()->name,
+            ]);
 
         return redirect()->route('dashboard')->with('success', 'Skripsi berhasil ditambahkan.');
     }

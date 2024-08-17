@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\proposal;
-use App\Models\User as ModelsUser;
+use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,11 +26,20 @@ public function store(Request $request)
 
         $filePath = $request->file('file')->store('public/proposals');
 
-        proposal::create([
+        $proposal = proposal::create([
             'mahasiswa_id' => auth()->id(),
             'judul' => $request->judul,
             'file' => $filePath,
         ]);
+
+            $kaprodi = User::where('role', 'kaprodi');
+
+            Notification::create([
+                'user_id' => Auth::user()->id,
+                'type' => 'proposal',
+                'reference_id' => $proposal->id,
+                'message' => 'Pengajuan proposal baru oleh ' . auth()->user()->name,
+            ]);
 
         return redirect()->route('dashboard')->with('success', 'proposal berhasil ditambahkan.');
     }

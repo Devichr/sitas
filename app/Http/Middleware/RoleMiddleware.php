@@ -28,7 +28,7 @@ class RoleMiddleware
                 return redirect('/dosen/dashboard');
             }
             if (Auth::user()->role == 'admin') {
-                return redirect('/admin/dashboard');
+                return redirect('/kaprodi/dashboard');
             }else {
                 abort(403, 'Unauthorized action.');
             }

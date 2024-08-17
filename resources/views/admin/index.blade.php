@@ -1,7 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            <div class="relative">
+                <!-- Icon Bell -->
+                <button onclick="toggleNotifications()" class="relative focus:outline-none mx-4">
+                    <i class='bx bx-bell text-2xl'></i>
+                    @if($unreadNotifications > 0)
+                    <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
+                    @endif
+                </button>
+                {{ __('Dashboard') }}
+
+                <!-- Dropdown Notifications -->
+                <div id="notificationsDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg">
+                    <div class="p-4 max-h-60 overflow-y-auto">
+                        @forelse($notifications as $notification)
+                            <div class="mb-2 border-b pb-2">
+                                <p>{{ $notification->message }}</p>
+                                <small class="text-gray-600">{{ $notification->created_at->diffForHumans() }}</small>
+                            </div>
+                            <div>
+                                <button onclick="markAllAsRead()">
+                                    <i class="bx bx-check" ></i>Tandai sudah dibaca
+                                </button>
+                            </div>
+                        @empty
+                            <p class="text-center text-gray-600">Tidak ada notifikasi baru</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
         </h2>
     </x-slot>
     @if(session('success'))
@@ -120,6 +148,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    <script>
+        function toggleNotifications() {
+            var dropdown = document.getElementById('notificationsDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        function markAllAsRead(){
+                window.location.href = "{{ route('kaprodi.markAllAsRead') }}";
+        }
+        </script>
+
 <script>
     const ctx = document.getElementById('proposalChart').getContext('2d');
     const ctx2 = document.getElementById('dateStatusChart').getContext('2d');

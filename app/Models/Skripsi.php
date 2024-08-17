@@ -16,6 +16,7 @@ class Skripsi extends Model
         'judul',
         'status',
         'file',
+        'keterangan'
     ];
 
     public function mahasiswa()
